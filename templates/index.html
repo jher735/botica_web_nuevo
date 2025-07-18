@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Botica UNAJMA | Registro de Ventas</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #e0f2f1, #b2ebf2);
+    }
+
+    .navbar {
+      background-color: #00796b;
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar h2 {
+      margin: 0;
+    }
+
+    .navbar a {
+      color: white;
+      margin-left: 20px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .navbar a:hover {
+      text-decoration: underline;
+    }
+
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    .form-container {
+      background: #ffffff;
+      padding: 40px 50px;
+      border-radius: 18px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #00796b;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 1em;
+      color: #555;
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+      color: #004d40;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 1em;
+      transition: border-color 0.3s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #00796b;
+      box-shadow: 0 0 5px rgba(0, 121, 107, 0.3);
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #00796b;
+      color: white;
+      font-size: 1em;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 15px;
+    }
+
+    button:hover {
+      background-color: #004d40;
+    }
+
+    table {
+      margin-top: 30px;
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    table, th, td {
+      border: 1px solid #aaa;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #00796b;
+      color: white;
+    }
+
+    footer {
+      margin-top: 30px;
+      text-align: center;
+      font-size: 0.85em;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Menú de navegación -->
+  <div class="navbar">
+    <h2>💊 Botica UNAJMA</h2>
+    <div>
+      <a href="#" onclick="mostrarTabla()">Registro de Ventas</a>
+    </div>
+  </div>
+
+  <!-- Contenido principal -->
+  <div class="main-content">
+    <div class="form-container">
+      <h1>Registro de Ventas</h1>
+      <p class="subtitle">Completa los datos para registrar una venta</p>
+
+      <form method="POST">
+        <div class="form-group">
+          <label for="comprador">👤 Nombre del Comprador:</label>
+          <input type="text" id="comprador" name="comprador" placeholder="Ej. Juan Pérez" required>
+        </div>
+
+        <div class="form-group">
+          <label for="producto">💊 Nombre del Producto:</label>
+          <input type="text" id="producto" name="producto" placeholder="Ej. Paracetamol 500mg" required>
+        </div>
+
+        <div class="form-group">
+          <label for="cantidad">🔢 Cantidad:</label>
+          <input type="number" id="cantidad" name="cantidad" min="1" placeholder="Ej. 2" required>
+        </div>
+
+        <div class="form-group">
+          <label for="precio">💵 Precio Unitario (S/):</label>
+          <input type="number" id="precio" name="precio" step="0.01" placeholder="Ej. 1.50" required>
+        </div>
+
+        <div class="form-group">
+          <label for="fecha">📅 Fecha de Venta:</label>
+          <input type="date" name="fecha" max="{{ fecha_maxima }}" required>
+        </div>
+
+        <button type="submit">✅ Registrar Venta</button>
+      </form>
+
+      <!-- 🟩 Tabla de ventas (oculta al inicio) -->
+      <div id="tablaVentas" style="display: none;">
+        <h2>📋 Ventas Registradas</h2>
+        {% if ventas %}
+        <table>
+          <thead>
+            <tr>
+                <th>ID</th>
+              <th>Comprador</th>
+              <th>Producto</th>
+              <th>Cantidad</th>
+              <th>Precio</th>
+              <th>Fecha</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for venta in ventas %}
+            <tr>
+              <td>{{ venta[0] }}</td>
+              <td>{{ venta[1] }}</td>
+              <td>{{ venta[2] }}</td>
+              <td>S/. {{ venta[3] }}</td>
+              <td>{{ venta[4] }}</td>
+              <td>{{ venta[5] }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <p>No hay ventas registradas aún.</p>
+        {% endif %}
+      </div>
+
+      <footer>
+        <p>Desarrollado por UNAJMA - 2025</p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Script para mostrar la tabla -->
+  <script>
+    function mostrarTabla() {
+      var tabla = document.getElementById("tablaVentas");
+      if (tabla.style.display === "none") {
+        tabla.style.display = "block";
+        window.scrollTo(0, document.body.scrollHeight);
+      } else {
+        tabla.style.display = "none";
+      }
+    }
+  </script>
+
+</body>
+</html>
