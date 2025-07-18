@@ -8,11 +8,11 @@ app = Flask(__name__)
 # 🔗 CONEXIÓN A POSTGRESQL EN RENDER
 try:
     conn = psycopg2.connect(
-        dbname="botica_bd",
-        user="botica_bd_user",
-        password="pJ0E96luKaBjJ2QjhWU2MGCeYN8Cmzyh",
-        host="dpg-d1ssm16r433s73emt7og-a.oregon-postgres.render.com",
-        port="5432"
+    dbname="botica_bd_bq72",
+    user="botica_bd_bq72_user",
+    password="WfYYqBZ5Bi8obQpGicatlM8rCadb0UF8",
+    host="dpg-d1t5ia3ipnbc7385jjug-a.oregon-postgres.render.com",
+    port="5432"
     )
     cursor = conn.cursor()
 except Exception as e:
