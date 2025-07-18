@@ -1,20 +1,21 @@
 from flask import Flask, render_template, request
 import psycopg2
-from urllib.parse import urlparse
 import os
 from datetime import date
 
 app = Flask(__name__)
 
-# URL de Render - reemplaza esta por tu propia URL
-DATABASE_URL = os.environ.get('DATABASE_URL', 'postgresql://botica_bd_user:pJ0E96luKaBjJ2QjhWU2MGCeYN8Cmzyh@dpg-d1ssm16r433s73emt7og-a.oregon-postgres.render.com/botica_bd')
-
-# Conexión a la base de datos
-conn = psycopg2.connect(DATABASE_URL)
-cursor = conn.cursor()
+# URL de conexión de PostgreSQL en Render
+DATABASE_URL = os.environ.get(
+    'DATABASE_URL',
+    'postgresql://botica_bd_user:pJ0E96luKaBjJ2QjhWU2MGCeYN8Cmzyh@dpg-d1ssm16r433s73emt7og-a.oregon-postgres.render.com/botica_bd'
+)
 
 @app.route('/', methods=['GET', 'POST'])
 def registro():
+    conn = psycopg2.connect(DATABASE_URL)
+    cursor = conn.cursor()
+
     if request.method == 'POST':
         comprador = request.form['comprador']
         producto = request.form['producto']
@@ -30,6 +31,9 @@ def registro():
 
     cursor.execute("SELECT * FROM ventas")
     ventas = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
 
     return render_template('index.html', ventas=ventas, fecha_maxima=str(date.today()))
 
